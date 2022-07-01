@@ -26,4 +26,9 @@ If you find good traditional Italian recipes, or for bugs/enhancements pls use t
 
 ### Complaints
 
-Yes, I know, I'm picky about food. [Let me know how crazy and silly I am](issues/new?title=Complaint&body=%2A%2AInsert%20complaint%20here%2A%2A).
+Yes, I know, I'm picky about food. [Let me know how crazy and silly I am](/../../issues/new?title=Complaint&body=%2A%2AInsert%20complaint%20here%2A%2A).
+
+
+**Complaints to date:**
+
+- *(none)*
