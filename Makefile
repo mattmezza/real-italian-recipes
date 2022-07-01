@@ -11,7 +11,7 @@ deploy: build
 	git reset --hard origin/main
 	find . -maxdepth 1 ! -name src -delete
 	cp -r src/public/* .
-	rm -vr src/public
+	rm -r src
 	echo 'realitalianrecipes.com' > CNAME
 	git add -A .
 	git commit -a -m 'gh-pages update'
