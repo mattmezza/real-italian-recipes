@@ -9,7 +9,7 @@
   <meta property="og:title" content="Real Italian Recipes" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="/index.html" />
-  <meta property="og:image" content="/og.png" />
+  <meta property="og:image" content="/og.webp" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -112,7 +112,7 @@
         <div x-show="$store.recipes.res.length === 0" class="min-h-screen w-96 mx-auto flex flex-col justify-start items-center mt-6 relative" x-transition.fade>
           <div class="absolute top-48 text-center left-0 w-full font-black text-lg animate-pulse mb-4 mt-8" x-text="q ? '😔 No results 🤌' : '👍 Nonna approved! 👍'"></div>
         </div>
-        <img src="/nonna.png" alt="Italian Nonna" class="fixed bottom-0 right-0 w-24 origin-bottom-right cursor-hand-gesture" :class="($store.recipes.res.length === 0 && !q) ? 'scale-[200%] sm:scale-[300%] md:scale-[400%] active:scale-[195%] sm:active:scale-[290%] md:active:scale-[380%]' : 'active:scale-[145%] hover:scale-150'" />
+        <img src="/nonna.webp" alt="Italian Nonna" class="fixed bottom-0 right-0 w-24 origin-bottom-right cursor-hand-gesture" :class="($store.recipes.res.length === 0 && !q) ? 'scale-[200%] sm:scale-[300%] md:scale-[400%] active:scale-[195%] sm:active:scale-[290%] md:active:scale-[380%]' : 'active:scale-[145%] hover:scale-150'" />
       </div>
       <div x-show="rmodal"
         class="min-h-screen w-screen fixed top-0 left-0 bg-slate-500/80 flex justify-center items-center overflow-y-auto z-50"
