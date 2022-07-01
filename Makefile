@@ -22,8 +22,8 @@ release: build
 	git tag v$(v)
 	git push origin v$(v)
 	cd src/public && zip -r v$(v).zip .
-	gh release create v$(v) 'v$(v).zip#Real Italian Recipes v$(v)' --generate-notes
-	rm -f v$(v).zip
+	gh release create v$(v) 'src/public/v$(v).zip#Real Italian Recipes v$(v)' --generate-notes
+	rm -f src/public/v$(v).zip
 deploy: release
 	git branch -f gh-pages
 	git checkout gh-pages
