@@ -9,7 +9,7 @@ deploy: build
 	git branch -f gh-pages
 	git checkout gh-pages
 	git reset --hard origin/main
-	find . -maxdepth 1 ! -name src -delete
+	find . -maxdepth 1 ! -name src -exec rm -r {} ';'
 	cp -r src/public/* .
 	rm -r src
 	echo 'realitalianrecipes.com' > CNAME
