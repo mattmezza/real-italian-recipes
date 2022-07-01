@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Real Italian Recipes</title>
+  <meta name="description" content="Italian recipes">
+  <link rel="manifest" href="manifest.json">
+  <meta property="og:title" content="Real Italian Recipes" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="/index.html" />
+  <meta property="og:image" content="/og.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="/style.css" rel="stylesheet">
+  <script cache defer src="https://unpkg.com/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
+  <script cache src="https://unpkg.com/alpinejs" defer></script>
+</head>
+
+<body class="scroll-smooth" x-data="{q: new URLSearchParams(location.search).get('q'), r: new URLSearchParams(location.search).get('r'), rmodal: null, showIngr: true, showInstr: false}" x-init="$store.recipes.load(); window.scrollTo(0, 0)">
+  <div class="min-h-screen">
+    <div class="h-52 sm:h-64 md:h-80 bg-slate-900 flex justify-center items-center relative overflow-hidden">
+      <video autoplay loop muted class="absolute w-auto min-w-full min-h-full max-w-[98vw] blur-2xl">
+        <source src="/flag.mp4" type="video/mp4" />
+      </video>
+      <a :href="window.location.origin + window.location.pathname">
+        <h1
+        class="text-3xl sm:text-5xl md:text-7xl font-extrabold bg-gradient-to-br from-red-700 to-emerald-500 bg-clip-text z-10 font-sans flex gap-4">
+          <span class="relative text-red-700">Real</span>
+        <span class="before:block before:absolute before:-inset-1 before:-skew-y-3 before:bg-blue-700 before:shadow relative inline-block flex gap-0">
+          <span class="relative text-emerald-600">It</span>
+          <span class="relative text-white">ali</span>
+          <span class="relative text-red-700">an</span>
+        </span>
+          <span class="relative text-emerald-700">Recipes</span>
+      </h1>
+      </a>
+    </div>
+    <div x-show="$store.recipes.book === null" class="w-full min-h-[calc(100vh-208px)] flex flex-col justify-center items-center text-slate-400 bg-white">
+      <svg width="140" height="64" viewBox="0 0 140 64" xmlns="http://www.w3.org/2000/svg" class="w-24 fill-red-700">
+        <path
+          d="M30.262 57.02L7.195 40.723c-5.84-3.976-7.56-12.06-3.842-18.063 3.715-6 11.467-7.65 17.306-3.68l4.52 3.76 2.6-5.274c3.717-6.002 11.47-7.65 17.305-3.68 5.84 3.97 7.56 12.054 3.842 18.062L34.49 56.118c-.897 1.512-2.793 1.915-4.228.9z"
+          fill-opacity=".5">
+          <animate attributeName="fill-opacity" begin="0s" dur="1.4s" values="0.5;1;0.5" calcMode="linear"
+            repeatCount="indefinite" />
+        </path>
+        <path
+          d="M105.512 56.12l-14.44-24.272c-3.716-6.008-1.996-14.093 3.843-18.062 5.835-3.97 13.588-2.322 17.306 3.68l2.6 5.274 4.52-3.76c5.84-3.97 13.592-2.32 17.307 3.68 3.718 6.003 1.998 14.088-3.842 18.064L109.74 57.02c-1.434 1.014-3.33.61-4.228-.9z"
+          fill-opacity=".5">
+          <animate attributeName="fill-opacity" begin="0.7s" dur="1.4s" values="0.5;1;0.5" calcMode="linear"
+            repeatCount="indefinite" />
+        </path>
+        <path
+          d="M67.408 57.834l-23.01-24.98c-5.864-6.15-5.864-16.108 0-22.248 5.86-6.14 15.37-6.14 21.234 0L70 16.168l4.368-5.562c5.863-6.14 15.375-6.14 21.235 0 5.863 6.14 5.863 16.098 0 22.247l-23.007 24.98c-1.43 1.556-3.757 1.556-5.188 0z" />
+      </svg>
+      loading recipes
+    </div>
+    <div x-show="$store.recipes.book" class="h-full">
+      <div class="w-full pt-4 sticky top-0 backdrop-blur bg-white/30 shadow">
+        <div class="container mx-auto px-4 flex flex-col gap-2">
+          <div class="w-full flex gap-0 justify-center items-center">
+            <button
+              class="h-11 w-11 rounded-tl rounded-bl bg-slate-100 shadow hover:bg-slate-300 active:scale-95 flex justify-center items-center"
+              @click="q = ''">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            <input x-model="q" type="text" placeholder="Search by name or ingredients..."
+              class="w-full px-4 border-0 h-11 py-2 shadow-lg border rounded-r ring-0 outline-none" autofocus />
+          </div>
+          <div class="flex justify-between">
+            <label class="px-4 text-xs sm:text-sm text-slate-700 flex gap-1 items-center hover:cursor-pointer">I only have the
+              above
+              ingredients <input class="hover:cursor-pointer" type="checkbox" x-model="$store.recipes.exclusive" /></label>
+      
+            <div class="text-xs text-slate-400 mt-2 text-right" x-show="q">
+              <span class="hidden peer-hover:block">This is a permalink 👉</span>
+              <a class="peer" :href="window.location.origin + window.location.pathname + '?q=' + q" alt="Permalink"><span
+                  x-text="$store.recipes.res.length"></span> results for '<span x-text="q"></span>'</a>
+            </div>
+          </div>
+          <ul class="list-none flex gap-2 text-slate-700 mb-2 text-sm w-full max-w-full overflow-x-auto scrollbar-none">
+            <li class="italic text-slate-500 min-w-[150px]">Need inspiration?</li>
+            <template x-for="s in $store.recipes.suggestions" :key="s">
+              <li x-transition.scale><button x-text="s" class="underline decoration-dotted capitalize active:scale-95"
+                  @click="q = (q ? q.trim() : '') + ' ' + s"></button></li>
+            </template>
+          </ul>
+        </div>
+      </div>
+      <div class="container mx-auto bg-white" x-init="$watch('q', q => $store.recipes.search(q)); $watch('$store.recipes.exclusive', () => $store.recipes.search(q)); $watch('$store.recipes.book', () => {if (q) $store.recipes.search(q);if (r) rmodal = {...$store.recipes.book[r], url: r};})">
+        <template x-if="$store.recipes.res && $store.recipes.res.length > 0">
+          <ul x-transition class="py-4 shadow-xl">
+            <template x-for="r in $store.recipes.res" :key="r.url">
+              <li
+                class="flex justify-between hover:cursor-pointer hover:bg-slate-100 px-4 py-2 md:px-8 md:py-4 border-b last:border-b-0 active:scale-[99%]"
+                x-data="{expand: false}" @click="rmodal = r">
+                <div class="flex flex-col gap-1">
+                  <div class="flex flex-row gap-1 items-center">
+                    <h1 class="text-lg font-semibold" x-text="r.title"></h1>
+                    <span class="text-xs text-slate-700" x-show="r.prep_time" x-text="r.prep_time + 'min'"></span>
+                  </div>
+                  <div class="text-sm text-slate-700" x-text="r.ingredients.join(', ')"></div>
+                </div>
+              </li>
+            </template>
+          </ul>
+        </template>
+        <div x-show="$store.recipes.res.length === 0" class="min-h-screen w-96 mx-auto flex flex-col justify-start items-center mt-6 relative" x-transition.fade>
+          <div class="absolute top-48 text-center left-0 w-full font-black text-lg animate-pulse mb-4 mt-8" x-text="q ? '😔 No results 🤌' : '👍 Nonna approved! 👍'"></div>
+        </div>
+        <img src="/nonna.png" alt="Italian Nonna" class="fixed bottom-0 right-0 w-24 origin-bottom-right cursor-hand-gesture" :class="($store.recipes.res.length === 0 && !q) ? 'scale-[200%] sm:scale-[300%] md:scale-[400%] active:scale-[195%] sm:active:scale-[290%] md:active:scale-[380%]' : 'active:scale-[145%] hover:scale-150'" />
+      </div>
+      <div x-show="rmodal"
+        class="min-h-screen w-screen fixed top-0 left-0 bg-slate-500/80 flex justify-center items-center overflow-y-auto z-50"
+        x-transition.opacity>
+        <div @click.outside="rmodal = null" x-show="rmodal" class="rounded bg-white w-[95vw] md:max-w-5xl relative shadow-xl"
+          x-transition:enter-start="opacity-0 transform scale-0" x-transition:enter-end="opacity-100 transform scale-100">
+          <span @click="rmodal = null" alt="Close"
+            class="absolute top-2 right-2 font-mono rounded text-white bg-slate-600 text-xs p-1 hover:cursor-pointer hover:bg-slate-700 active:scale-95 z-50">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-3" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd"
+                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                clip-rule="evenodd" />
+            </svg>
+          </span>
+          <template x-if="rmodal">
+            <div class="relative"
+              x-data="{l: window.location.origin + window.location.pathname + '?r=' + encodeURIComponent(rmodal.url)}"
+              >
+              <div class="h-40 bg-red-600 rounded-t relative blur-xs" :style="{
+                background: `url(${rmodal.image}) no-repeat fixed center`,
+                backgroundSize: 'cover',
+              }">
+              </div>
+              <div class="absolute top-0 left-0 h-40 w-full bg-gradient-to-b from-transparent to-slate-900/80">
+                <div>
+                <a :href="window.location.origin + window.location.pathname + '?r=' + rmodal.url"
+                  class="absolute bottom-16 left-8 md:left-16 flex gap-1 items-center text-sm text-white hover:underline max-w-[calc(100%-64px)] md:w-[calc(100%-128px)]">
+                  <h1 class="font-bold text-2xl lg:text-3xl text-white inline" x-text="rmodal.title">
+                  </h1>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white inline" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                    stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                  </svg>
+                </a>
+                </div>
+                <div class="absolute bottom-8 left-8 md:left-16 flex gap-2 justify-center items-center text-slate-300 text-base">
+                  <div x-show="rmodal.total_time" class="flex gap-1 items-center text-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                      stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span x-text="rmodal.total_time || ''"></span>
+                    <span>min</span>
+                  </div>
+                  <ul x-show="rmodal.ratings !== null" class="list-none flex gap-0">
+                    <template x-for="x in Array.from(Array(5).keys()).map(x => x <= rmodal.ratings)">
+                      <li :class="x ? 'fill-yellow-500' : 'fill-slate-500'">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                        </svg>
+                      </li>
+                    </template>
+                  </ul>
+                  <a class="text-xs hover:underline" href="https://memoriediangelina.com"
+                    target="_blank">memoriediangelina.com</a>
+                </div>
+              </div>
+              <div x-data="{mtab: 'ingr'}" class="relative">
+                <div class="grid grid-cols-2 gap-0 border-b backdrop-blur bg-white/30 absolute top-0 left-0 w-full">
+                  <button class="uppercase font-semibold tracking-wide text-sm px-2 py-1 md:px-4 md:py-2 hover:bg-slate-400/30 active:scale-95" @click="mtab = 'ingr'">Ingredients</button>
+                  <button class="uppercase font-semibold tracking-wide text-sm px-2 py-1 md:px-4 md:py-2 hover:bg-slate-400/30 active:scale-95" @click="mtab = 'instr'">Instructions</button>
+                </div>
+                <div x-show="mtab === 'ingr'" class="px-16 py-16">
+                  <ul class="list-disc list-inside text-slate-700 text-xs sm:text-sm md:text-base" x-transition.slide>
+                    <template x-for="ingr in rmodal.ingredients">
+                      <li x-text="ingr"></li>
+                    </template>
+                  </ul>
+                </div>
+                <div x-show="mtab === 'instr'" class="py-16 scrollbar-none max-h-[50vh] overflow-y-auto">
+                  <p
+                    class="px-8 max-w-xl mx-auto whitespace-pre-wrap text-xs sm:text-sm md:text-base text-slate-700 leading-loose text-justify break-words font-serif first-letter:uppercase first-letter:text-5xl first-letter:tracking-widest first-letter:font-bold first-letter:float-left"
+                    x-text="rmodal.instructions"
+                    x-transition.slide
+                    ></p>
+                  <div class="pt-52 pb-24 text-center font-sans flex flex-col gap-2 justify-center items-center">
+                    <span class="text-5xl opacity-80">😋</span>
+                    <span style="text-shadow: 0px 0px 5px gray;" class="italic font-black text-white">Buon appetito!</span>
+                    <div class="flex gap-2 items-center justify-center text-slate-500">
+                      <button class="flex gap-1 justify-center items-center uppercase font-semibold text-sm px-4 py-2 rounded hover:bg-slate-100 active:scale-95 hover:cursor-pointer" @click="navigator.clipboard.writeText(l); alert(`Link '${l}' copied in the clipboard. Share it!`)">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+</svg>
+Share recipe
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-0">
+                  <a :href="rmodal.url" target="_blank"
+                    class="flex flex-row gap-1 justify-center items-center px-4 py-2 md:px-8 md:py-4 rounded-bl hover:bg-emerald-700 font-semibold  active:scale-95 uppercase bg-emerald-600 text-white">
+                    See more
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                      stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                  </a>
+                  <button @click="navigator.clipboard.writeText(l); alert(`Link '${l}' copied in the clipboard. Share it!`)"
+                    class="flex gap-1 items-center justify-center px-4 py-2 md:px-8 md:py-4 bg-white hover:bg-slate-100 text-black uppercase font-semibold active:scale-95">
+                    Share recipe
+<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+</svg>
+                  </button>
+                  <button @click="rmodal = null"
+                    class="px-4 py-2 md:px-8 md:py-4 bg-red-700 hover:bg-red-800 rounded-br text-white uppercase font-semibold active:scale-95">Close</button>
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="w-full flex flex-col gap-1 justify-center items-center py-2 text-xs text-slate-600">
+    <p class="flex flex-row gap-1">
+      Made with
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 fill-red-700 animate-pulse" viewBox="0 0 24 24" stroke-width="2">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+</svg>
+and 🍝
+      by
+      <a href="https://twitter.com/@_mattmezza_" class="font-semibold">@_mattmezza_</a>
+    </p>
+    <a href="https://matteo.merola.co" class="font-semibold">matteo.merola.co</a>
+  </div>
+    <script>
+      document.addEventListener('alpine:init', () => {
+        Alpine.store('recipes', {
+          init() {
+            this.exclusive = false
+            this.book = {}
+            this.res = []
+            this.to = null
+          },
+          exclusive: false,
+          book: null,
+          async load() {
+            this.book = await (await fetch('/book.json')).json()
+            this.suggestions = [...new Set((await (await fetch('/ingr.json')).json()).sort(() => .5 - Math.random()))]
+          },
+          res: [],
+          to: null,
+          suggestions: [],
+          search(q) {
+            if (!q || q.length <= 2) {
+              this.res = []
+              return
+            }
+            if (this.to) {
+              clearTimeout(this.to)
+            }
+            this.to = setTimeout(() => {
+              this.res = []
+              for (const [url, r] of Object.entries(this.book)) {
+                if (this.exclusive) {
+                  const qingr = (q.replace(/\s\s+/g, ' ').trim() + " salt oil parsley pepper").toLowerCase().split(' ')
+                  const ringr = r.ingredients.map(i => i.toLowerCase())
+                  if (ringr.every(i => qingr.some(q => i.includes(q))))
+                    this.res = [...this.res, {...r, url}]
+                } else {
+                  const qingr = q.replace(/\s\s+/g, ' ').trim().toLowerCase().split(' ')
+                  if (
+                    qingr.some(i => r.title.toLowerCase().includes(i))
+                    || qingr.some(i => r.ingredients.join(' ').toLowerCase().includes(i))
+                  ) {
+                    this.res = [...this.res, {...r, url}]
+                  }
+                }
+              }
+            }, 150)
+          }
+        })
+      })
+    </script>
+</body>
+</html>
