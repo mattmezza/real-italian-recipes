@@ -1,9 +1,0 @@
-{
-  "port": 8085,
-  "root": "src/public",
-  "open": "index.html",
-  "host": "0.0.0.0",
-  "browser": "safari",
-  "https": true,
-  "watch": "src"
-}
